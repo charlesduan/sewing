@@ -1,7 +1,8 @@
-main: mask.pdf
-
-%.pdf: %.ps
+%.pdf: %.ps FORCE
 	ps2pdf "$<"
 
 %.ps: %.mp
 	mpost "$<"
+
+FORCE:
+
