@@ -16,17 +16,15 @@ beginfig(1);
 
     path p[], p[]';
 
-    p123 = z1..z2..z3;
-    p345 = z3..z4..tension 1.1..z5;
-    p50 = z5--z0;
+    p321 = z3..z2..z1;
+    p543 = z5..tension 1.1..z4..z3;
+    p5 = z0--z5;
 
-    draw p123 & p345 & p50--cycle
-        withpen pencircle scaled 1pt;
+    draw p5 & p543 & p321 -- cycle dashed evenly;
 
-    draw add_seam_allowance(p123) -- add_seam_allowance(p345)
-        -- add_seam_allowance(p50) -- add_seam_allowance(z0--z1) -- cycle
-        dashed evenly;
-
+    draw add_seam_allowance(p5) joined add_seam_allowance(p543)
+        joined add_seam_allowance(p321) joined add_seam_allowance(z1--z0)
+        -- cycle;
 
     dotlabels.lft(0, 1, 3, 4);
     dotlabels.bot(2, 5);
@@ -37,6 +35,8 @@ beginfig(1);
     measurebars(0, 5, left, btex $d$ etex);
     measurebars(1, 3, up, btex $w_t$ etex);
     measurebars(0, 5, down, btex $w_b$ etex);
+
+    label(jobname, .5[z1, z5]);
 
 endfig;
 end
