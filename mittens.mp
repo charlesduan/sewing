@@ -1,41 +1,5 @@
 input sewlib;
 
-%
-% Distance from the thumb vee to the top of the thumb.
-%
-thumb_height := 2in;
-
-%
-% Circumference of the thumb.
-%
-thumb_circum := 2.5in;
-
-%
-% Distance from the thumb vee vertically to the tallest finger.
-%
-finger_height = 5in;
-
-%
-% Circumference around the widest part of the palm (horizontally from the vee).
-%
-palm_circum = 8in;
-
-%
-% Distance from the vee vertically to the bottom of the wrist.
-%
-palm_bottom_length = 3in;
-
-%
-% Extra width at the bottom of the seam.
-%
-wrist_length = 1in;
-
-%
-% How high the palm curve should run. By default, we make the palm top an
-% approximate circle, but it can be made ellipse-like by adjusting this value.
-%
-palm_curve_height = palm_circum / 4;
-
 beginfig(1);
 
     x12 - x16 = palm_circum/2 + 2seam_loss;
@@ -107,10 +71,6 @@ beginfig(3);
     z33 - z32 = z35 - z31; x35 = x31;
     x34 = .5[x33, x35]; z34 - z35 = whatever * (1, 1);
     y34 - y31 = palm_bottom_length + wrist_length + finger_height + seam_loss;
-    show z32;
-    show z33;
-    show z34;
-    show z35;
 
     path p; p = z32 -- z33{up} .. z34{left} .. {down}z35 -- z31;
     draw p -- cycle dashed evenly;
