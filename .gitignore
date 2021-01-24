@@ -2,3 +2,6 @@
 *.swo
 *.mpx
 *.log
+*-[0-9].pdf
+*.ps
+mpxerr.tex

@@ -27,7 +27,7 @@ seam_allowance := .375in;
 % The amount of fabric width that is lost on each seam side. This isn't used in
 % the library but is meant for the user.
 %
-seam_loss := 0.125in;
+seam_loss := 1/16 in;
 
 %
 % The width of rolled hems for cuffs and such. Double this amount should be
