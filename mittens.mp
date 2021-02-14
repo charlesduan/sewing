@@ -35,10 +35,21 @@ beginfig(1);
     measurebars(15, 13, up, btex ${1 \over 2}\rm palm\_circum$ etex);
     measurebars(11, 12, right * .5in, btex $\rm thumb\_height$etex);
 
+    figure_label("palm fingers", 15, 12);
+
+
+if finger_height + 2thumb_height + 4seam_allowance + palm_bottom_length +
+    wrist_length > 10in:
 endfig;
 
 beginfig(2);
-    z27 = (1in, 1in + 2hem_width);
+    y27 - if wrist_length>0: 2hem_width else: seam_allowance fi = 1in;
+else:
+    y27 - if wrist_length>0: 2hem_width else: seam_allowance fi =
+        y14 + .5in + seam_allowance;
+fi
+
+    x27 = 1in;
     z21 - z27 = (palm_circum/2 + 2seam_loss, 0);
     z26 - z27 = (0, palm_bottom_length + wrist_length + seam_loss);
     y25 = y26; x25 = x24;
@@ -50,7 +61,8 @@ beginfig(2);
     draw z26 -- z27 -- z21 -- p -- cycle dashed evenly;
 
     draw add_seam_allowance(z26--z27)
-        -- hem_allowance(z27--z21)
+        -- if wrist_length > 0: hem_allowance(z27--z21)
+           else: add_seam_allowance(z27--z21) fi
         -- add_seam_allowance(p)
         joined add_seam_allowance(z25--z26) -- cycle;
     dotlabels.lft(22, 24,  26);
@@ -58,10 +70,12 @@ beginfig(2);
     dotlabels.bot(25, 27, 21);
 
     measurebars(22, 24, down, btex${1 \over 2}{\rm thumb\_circum}$ etex);
-    measurebars(27, 21, up * 1in, btex ${1 \over 2}\rm palm\_circum$ etex);
+    measurebars(27, 21, up, btex ${1 \over 2}\rm palm\_circum$ etex);
     measurebars(26, 27, right, btex
         ${\rm palm\_bottom\_length}+{\rm wrist\_length}$
-        etex);
+        etex rotated 90);
+
+    figure_label("palm front", 21, 26)
 
 endfig;
 
@@ -74,7 +88,11 @@ beginfig(3);
 
     path p; p = z32 -- z33{up} .. z34{left} .. {down}z35 -- z31;
     draw p -- cycle dashed evenly;
-    draw add_seam_allowance(p) -- hem_allowance(z31--z32) -- cycle;
+    if wrist_length > 0:
+        draw add_seam_allowance(p) -- hem_allowance(z31--z32) -- cycle;
+    else:
+        draw add_seam_allowance(p) -- add_seam_allowance(z31--z32) -- cycle;
+    fi
     dotlabels.bot(31, 32);
     dotlabels.top(34);
     dotlabels.rt(33, 35);
@@ -83,6 +101,8 @@ beginfig(3);
         ${\rm palm\_bottom\_length}+{\rm wrist\_length}+{\rm finger\_height}$
         etex rotated 90);
     measurebars(35, 33, down, btex ${1 \over 2}\rm palm\_circum$ etex);
+
+    figure_label("mitten back", 31, 33);
 endfig;
 
 end

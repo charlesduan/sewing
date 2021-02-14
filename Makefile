@@ -1,7 +1,7 @@
 %.pdf: %.mp FORCE
 	mpost "$<"
 	for f in `basename $< .mp`-*.ps ; do \
-	    ps2pdf "$$f" ;\
+	    ps2pdf -dAutoRotatePages=/None "$$f" ;\
 	done
 	cpdf -o "$@" "`basename $< .mp`"-*.pdf
 
