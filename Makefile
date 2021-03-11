@@ -6,7 +6,7 @@
 	cpdf -o "$@" "`basename $< .mp`"-*.pdf
 
 clean:
-	rm -f *.mpx *.log mpxerr.tex *.ps *-[0-9].pdf
+	rm -f *.mpx *.log mpxerr.tex *.ps *-[0-9].pdf mptextmp.mp
 
 FORCE:
 

@@ -8,7 +8,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+input TEX;
 prologues := 3;
 outputtemplate := "%j-%c.ps";
 
@@ -21,19 +21,25 @@ outputtemplate := "%j-%c.ps";
 %
 % The sewing pattern's seam allowance; adjust as necessary.
 %
-seam_allowance := .375in;
+if not known(seam_allowance):
+    seam_allowance := .375in;
+fi
 
 %
 % The amount of fabric width that is lost on each seam side. This isn't used in
 % the library but is meant for the user.
 %
-seam_loss := 1/16 in;
+if not known(seam_loss):
+    seam_loss := 1/16 in;
+fi
 
 %
 % The width of rolled hems for cuffs and such. Double this amount should be
 % added wherever a hem is needed, since the hem is rolled over twice.
 %
-hem_width := 0.5in;
+if not known(hem_width):
+    hem_width := 0.5in;
+fi
 
 
 
@@ -104,9 +110,9 @@ def measurebars_(suffix $, $$)(expr way, lbl) =
         z_ = .25in * unitvector way;
         a_ = z$ + way + z_;
         b_ = z$$ + whatever * way = a_ + whatever * (way rotated 90);
-        draw z$--(a_  + .5z_);
-        draw z$$--(b_  + .5z_);
-        draw a_--b_;
+        draw z$--(a_  + .5z_) withcolor (0, .9, .9);
+        draw z$$--(b_  + .5z_) withcolor (0, .9, .9);
+        draw a_--b_ withcolor (0, .9, .9);
 
         if angle(way) < -157.5:
             label.lft(lbl, .5[a_, b_]);
@@ -210,4 +216,24 @@ vardef hem_allowance(expr p) =
         -- p
         -- ((point infinity of p) + osa * unitvector(direction infinity of p))
     )
+enddef;
+
+def figure_label(expr name)(text t) =
+    begingroup
+        save i_, p_;
+        pair p_;
+        i_ = 0;
+        p_ = (0, 0);
+        forsuffixes $ = t:
+            i_ := i_ + 1;
+            p_ := p_ + z$;
+        endfor
+        label(TEX("\vbox{"
+            & "\hbox{\tt " & jobname & ".mp}"
+            & "\hbox{" & decimal(year) & "-" & decimal(month) & "-"
+            & decimal(day) & "}"
+            & "\hbox{" & name & "}"
+            & "}"),
+            p_ / i_)
+    endgroup
 enddef;
