@@ -2,6 +2,10 @@ input sewlib;
 
 beginfig(1);
 
+    boolean on_one_page;
+    on_one_page = (palm_bottom_length + 2seam_allowance + finger_height < 8.5in)
+        and (palm_circum/2 + thumb_circum/2 + 2seam_allowance < 6in);
+
     x12 - x16 = palm_circum/2 + 2seam_loss;
     x14 = .5[x12, x16];
     x12 - x10 = thumb_circum/2 + 2seam_loss;
@@ -17,7 +21,23 @@ beginfig(1);
 
     y11' = y11''; x11' = x10; x11'' = x12; x11'' - x11 = y11' - y11;
 
-    y11 = 1in; x16 = 1in;
+    if on_one_page:
+        x13 = 7.5in; y14 = 10in;
+    else:
+        y11 = 1in; x16 = 1in;
+    fi
+
+    measurebars(11', 11'', up, btex ${1 \over 2}{\rm thumb\_circum}$ etex);
+    measurebars(15, 13, up, btex ${1 \over 2}\rm palm\_circum$ etex);
+    measurebars(11, 10, left * seam_allowance,
+        btex $\rm thumb\_height$etex rotated 90);
+    if on_one_page:
+        measurebars(14, 16, left * seam_allowance,
+            btex $\rm finger\_height$ etex rotated 90);
+    else:
+        measurebars(14, 12, right * seam_allowance,
+            btex $\rm finger\_height$ etex rotated 90);
+    fi
 
     path p; p = z10 -- z11'{down} .. z11{right} .. z11''{up} -- z12 -- z13{up}
         .. z14{left} .. z15{down} -- z16;
@@ -30,52 +50,44 @@ beginfig(1);
     dotlabels.lft(11', 12, 15, 16);
     dotlabels.bot(11);
 
-    measurebars(11', 11'', up, btex ${1 \over 2}{\rm thumb\_circum}$ etex);
-    measurebars(14, 12, right * .5in, btex $\rm finger\_height$ etex);
-    measurebars(15, 13, up, btex ${1 \over 2}\rm palm\_circum$ etex);
-    measurebars(11, 12, right * .5in, btex $\rm thumb\_height$etex);
-
     figure_label("palm fingers", 15, 12);
 
 
-if finger_height + 2thumb_height + 4seam_allowance + palm_bottom_length +
-    wrist_length > 10in:
+if not on_one_page:
 endfig;
 
 beginfig(2);
-    y27 - if wrist_length>0: 2hem_width else: seam_allowance fi = 1in;
-else:
-    y27 - if wrist_length>0: 2hem_width else: seam_allowance fi =
-        y14 + .5in + seam_allowance;
 fi
 
+    y27 = 1in;
     x27 = 1in;
     z21 - z27 = (palm_circum/2 + 2seam_loss, 0);
-    z26 - z27 = (0, palm_bottom_length + wrist_length + seam_loss);
-    y25 = y26; x25 = x24;
-    x22 = x21; x22 - x24 = thumb_circum/2 + 2seam_loss; x23 = .5[x22, x24];
+    z25 - z21 = (0, palm_bottom_length + seam_loss);
+    z26 = (x22, y25);
+    x24 = x27; x22 - x24 = thumb_circum/2 + 2seam_loss; x23 = .5[x22, x24];
     y23 - y25 = thumb_height + seam_loss; y24 = y22;
     z23 - z24 = whatever * (1, 1);
 
-    path p; p = z21 -- z22{up} .. z23{left} .. z24{down} -- z25;
-    draw z26 -- z27 -- z21 -- p -- cycle dashed evenly;
+    measurebars(22, 24, down, btex${1 \over 2}{\rm thumb\_circum}$ etex);
+    measurebars(27, 21, up, btex ${1 \over 2}\rm palm\_circum$ etex);
+    measurebars(21, 25, right * seam_allowance, btex
+        ${\rm palm\_bottom\_length}$
+        etex rotated 90);
+    measurebars(23, 26, right * seam_allowance,
+        btex ${\rm thumb\_height}$ etex rotated 90);
 
-    draw add_seam_allowance(z26--z27)
-        -- if wrist_length > 0: hem_allowance(z27--z21)
-           else: add_seam_allowance(z27--z21) fi
-        -- add_seam_allowance(p)
-        joined add_seam_allowance(z25--z26) -- cycle;
+    path p; p = z26 -- z22{up} .. z23{left} .. z24{down} -- z27;
+    draw z21 -- z25 -- p -- cycle dashed evenly;
+
+    draw add_seam_allowance(z21--z25)
+        joined add_seam_allowance(z25--z26)
+        joined add_seam_allowance(p)
+        joined add_seam_allowance(z27--z21) -- cycle;
     dotlabels.lft(22, 24,  26);
     dotlabels.top(23);
     dotlabels.bot(25, 27, 21);
 
-    measurebars(22, 24, down, btex${1 \over 2}{\rm thumb\_circum}$ etex);
-    measurebars(27, 21, up, btex ${1 \over 2}\rm palm\_circum$ etex);
-    measurebars(26, 27, right, btex
-        ${\rm palm\_bottom\_length}+{\rm wrist\_length}$
-        etex rotated 90);
-
-    figure_label("palm front", 21, 26)
+    figure_label("palm front", 25, 27)
 
 endfig;
 
@@ -84,25 +96,40 @@ beginfig(3);
     z32 - z31 = (palm_circum/2 + 2seam_loss, 0);
     z33 - z32 = z35 - z31; x35 = x31;
     x34 = .5[x33, x35]; z34 - z35 = whatever * (1, 1);
-    y34 - y31 = palm_bottom_length + wrist_length + finger_height + seam_loss;
+    y34 - y31 = palm_bottom_length + finger_height + seam_loss;
+
+    measurebars(31, 34, left * seam_allowance, btex
+        ${\rm palm\_bottom\_length}+{\rm finger\_height}$
+        etex rotated 90);
+    measurebars(35, 33, down, btex ${1 \over 2}\rm palm\_circum$ etex);
 
     path p; p = z32 -- z33{up} .. z34{left} .. {down}z35 -- z31;
     draw p -- cycle dashed evenly;
-    if wrist_length > 0:
-        draw add_seam_allowance(p) -- hem_allowance(z31--z32) -- cycle;
-    else:
-        draw add_seam_allowance(p) -- add_seam_allowance(z31--z32) -- cycle;
-    fi
+    draw add_seam_allowance(p) -- add_seam_allowance(z31--z32) -- cycle;
     dotlabels.bot(31, 32);
     dotlabels.top(34);
     dotlabels.rt(33, 35);
 
-    measurebars(32, 34, right * .5in, btex
-        ${\rm palm\_bottom\_length}+{\rm wrist\_length}+{\rm finger\_height}$
-        etex rotated 90);
-    measurebars(35, 33, down, btex ${1 \over 2}\rm palm\_circum$ etex);
-
     figure_label("mitten back", 31, 33);
+
+    z41 - z32 = (2seam_allowance, 0);
+    z42 - z41 = (2wrist_length + seam_loss, 0);
+    z43 - z42 = (0, wrist_circum + 2seam_loss);
+    z44 = (x41, y43);
+
+    measurebars(41, 44, right, btex${\rm wrist\_circum}$etex rotated 90);
+    measurebars(43, 44, down, btex$2{\rm wrist\_length}$etex);
+    dotlabels.bot(41, 42);
+    dotlabels.top(43, 44);
+
+    draw z41--z42--z43--z44--cycle dashed evenly;
+    draw add_seam_allowance(z41--z42)
+        joined add_seam_allowance(z42--z43)
+        joined add_seam_allowance(z43--z44)
+        joined add_seam_allowance(z44--z41) -- cycle;
+
+    figure_label("wrist cuff", 41, 42, 43, 44);
+
 endfig;
 
 end

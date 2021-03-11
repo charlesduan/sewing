@@ -26,7 +26,12 @@ palm_bottom_length = 3in;
 %
 % Extra width at the bottom of the seam.
 %
-wrist_length = 0in;
+wrist_length = 1.5in;
+
+%
+% Circumference of the wrist.
+%
+wrist_circum = 5in;
 
 %
 % How high the palm curve should run. By default, we make the palm top an

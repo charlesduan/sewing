@@ -110,9 +110,9 @@ def measurebars_(suffix $, $$)(expr way, lbl) =
         z_ = .25in * unitvector way;
         a_ = z$ + way + z_;
         b_ = z$$ + whatever * way = a_ + whatever * (way rotated 90);
-        draw z$--(a_  + .5z_) withcolor .6 white;
-        draw z$$--(b_  + .5z_) withcolor .6 white;
-        draw a_--b_ withcolor .6 white;
+        draw z$--(a_  + .5z_) withcolor (0, .9, .9);
+        draw z$$--(b_  + .5z_) withcolor (0, .9, .9);
+        draw a_--b_ withcolor (0, .9, .9);
 
         if angle(way) < -157.5:
             label.lft(lbl, .5[a_, b_]);
